@@ -1,0 +1,65 @@
+import datetime
+
+class Expense:
+    def __init__(self, date, description, amount):
+        self.date = date
+        self.description = description
+        self.amount = amount
+
+    def __str__(self):
+        return f"{self.date:%Y-%m-%d} - {self.description}: ${self.amount:.2f}"
+
+expenses = []
+
+def add_expense():
+    date_str = input("Enter date (YYYY-MM-DD): ")
+    try:
+        date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        print("Invalid date format. Please use YYYY-MM-DD.")
+        return
+
+    description = input("Enter description: ")
+    while True:
+        try:
+            amount = float(input("Enter amount: $"))
+            break
+        except ValueError:
+            print("Invalid amount. Please enter a number.")
+
+    expense = Expense(date, description, amount)
+    expenses.append(expense)
+    print("Expense added successfully!")
+
+def view_expenses():
+    if not expenses:
+        print("No expenses recorded yet.")
+        return
+
+    print("\nExpenses:")
+    for expense in expenses:
+        print(expense)
+
+    total = sum(expense.amount for expense in expenses)
+    print(f"\nTotal expenses: ${total:.2f}")
+
+def main():
+    while True:
+        print("\nExpense Tracker Menu:")
+        print("1. Add expense")
+        print("2. View expenses")
+        print("3. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            add_expense()
+        elif choice == '2':
+            view_expenses()
+        elif choice == '3':
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+if __name__ == "__main__":
+    main()
